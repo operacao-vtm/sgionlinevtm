@@ -84,7 +84,7 @@ const SIS={
   patrimonio:'https://patrimonio.gestaovtm.com.br/',
   busao:'https://operacao-vtm.github.io/busaoeasy/'
 };
-const IA_URL='';   /* endereço do Worker do Assistente no Cloudflare: preencher */
+const IA_URL='https://sgi-assistente.operacao-a39.workers.dev/';   /* Assistente no Cloudflare */
 const K='sgi:auth'; let auth=null; try{ auth=JSON.parse(localStorage.getItem(K)||'null'); }catch(e){}
 const $=s=>document.querySelector(s), esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const brl=v=>'R$ '+(Number(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
