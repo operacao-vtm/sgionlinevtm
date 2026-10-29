@@ -46,10 +46,12 @@ main{max-width:1180px;margin:0 auto;padding:26px 20px 110px}
 .grade{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;grid-auto-flow:row dense}
 .grade>.cartao{grid-column:span 4}
 .grade>#c-estoque{grid-column:span 8}
+.grade>#c-busao{grid-column:span 12}
+#c-busao .nums{grid-template-columns:repeat(4,1fr)}
 #c-estoque .nums{grid-template-columns:repeat(4,1fr)}
 #c-patrimonio .nums{grid-template-columns:1fr 1fr}
 #c-docs .nums{grid-template-columns:1fr}
-@media(max-width:1000px){.grade{grid-template-columns:repeat(6,1fr)}.grade>.cartao{grid-column:span 3}.grade>#c-estoque{grid-column:span 6}}
+@media(max-width:1000px){.grade{grid-template-columns:repeat(6,1fr)}.grade>.cartao{grid-column:span 3}.grade>#c-estoque,.grade>#c-busao{grid-column:span 6}}
 .cartao{position:relative;background:var(--painel);border:1px solid var(--linha);border-radius:18px;padding:18px 18px 16px 22px;display:flex;flex-direction:column;gap:12px;overflow:hidden}
 .cartao::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--cor,var(--magenta))}
 .cartao h2{margin:0;font-size:19px;font-weight:800;font-stretch:112%;display:flex;align-items:center;gap:10px}
@@ -135,7 +137,7 @@ main{max-width:1180px;margin:0 auto;padding:26px 20px 110px}
   header{padding:10px 14px;gap:10px;flex-wrap:nowrap}header img{height:22px}header h1{font-size:19px;letter-spacing:2px}header h1 .longo{display:none}header h1 .curto{display:inline}header .sub{display:none}
   header .eu{font-size:12px;gap:8px}header .eu span{max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   main{padding:16px 12px 110px}.ola{font-size:23px}
-  .grade{grid-template-columns:1fr;gap:12px}.grade>.cartao,.grade>#c-estoque{grid-column:auto}
+  .grade{grid-template-columns:1fr;gap:12px}.grade>.cartao,.grade>#c-estoque,.grade>#c-busao{grid-column:auto}#c-busao .nums{grid-template-columns:1fr 1fr}
   #c-estoque .nums{grid-template-columns:1fr 1fr}#c-patrimonio .nums{grid-template-columns:repeat(3,1fr)}#c-docs .nums{grid-template-columns:1fr 1fr}
   .cartao{padding:14px 14px 14px 18px;border-radius:16px}.cartao h2{font-size:17px}
   .num{padding:9px 10px}.num b{font-size:21px}.num span{font-size:11.5px}
@@ -201,7 +203,8 @@ const SIS={
   documentos:'https://operacao-vtm.github.io/controledeestoquevtm/documentos.html',
   os:'https://os.gestaovtm.com.br/',
   patrimonio:'https://patrimonio.gestaovtm.com.br/',
-  busao:'https://operacao-vtm.github.io/busaoeasy/'
+  busao:'https://operacao-vtm.github.io/busaoeasy/',
+  almox:'https://operacao-vtm.github.io/almoxarifado/'
 };
 const IA_URL='https://sgi-assistente.operacao-a39.workers.dev/';   /* Assistente no Cloudflare */
 const K='sgi:auth'; let auth=null; try{ auth=JSON.parse(localStorage.getItem(K)||'null'); }catch(e){}
@@ -312,6 +315,7 @@ async function montar(){
   const est=String(eu.estoque||'').toLowerCase(), pat=String(eu.patrimonio||'').toLowerCase(), osp=String(eu.perfil||'').toLowerCase();
   const C=[];
   if(est) C.push(['estoque','var(--magenta)','📦','Controle de Estoque','Almoxarifado: entradas, saídas, pedidos, liberação e retorno de serviço.',dadosEstoque,SIS.estoque]);
+  if(est) C.push(['almox','#B83280','🗄️','Almoxarifado','O mesmo almoxarifado do Controle de Estoque, nas telas do SGI: Início, Cadastros, Entrada, Saída e Controle.',null,SIS.almox]);
   if(osp||!eu.nome) C.push(['os','var(--azul)','📋','Painel de OS','Ordens de serviço, Mapa de Telas e avisos da manutenção.',dadosOS,SIS.os]);
   if(pat) C.push(['patrimonio','var(--laranja)','🏛️','Patrimônio','Bens, locais, substituições, retiradas e vistorias.',dadosPatrimonio,SIS.patrimonio]);
   if(est&&est!=='campo') C.push(['docs','var(--violeta)','📁','Documentos','Requisições, entradas com nota, compras e retornos de serviço (PDF e XML).',dadosDocs,SIS.documentos,'Abrir']);
