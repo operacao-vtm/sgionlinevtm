@@ -82,11 +82,37 @@ main{max-width:1180px;margin:0 auto;padding:26px 20px 110px}
 #iaBola{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:50;width:58px;height:58px;border-radius:50%;border:1px solid var(--linha);background:var(--ink);color:var(--noite);font:800 17px var(--fonte);letter-spacing:1px;box-shadow:0 8px 22px rgba(0,0,0,.35)}
 #iaJanela{position:fixed;right:18px;bottom:calc(90px + env(safe-area-inset-bottom,0px));z-index:49;width:min(440px,calc(100vw - 24px));max-height:calc(100vh - 120px);overflow:auto;display:none;box-shadow:0 16px 44px rgba(0,0,0,.5);border-radius:18px}
 #iaJanela.aberta{display:block}#iaJanela .ia{margin:0}
+#iaJanela{overflow-x:hidden}.ia{min-width:0}#iaConversa .msg{max-width:100%;overflow-x:auto;box-sizing:border-box}.mapa{max-width:100%}
 .ia .msg.p{background:transparent;border:1px solid var(--linha);color:var(--ink);margin-left:18%;display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
 .ia .msg.erro{color:var(--alerta)}
 .ia .acoesMsg{display:flex;gap:6px;flex-shrink:0}
 .ia .acoesMsg button{border:1px solid var(--linha);background:transparent;color:var(--ink2);border-radius:999px;padding:3px 10px;font-size:12px}
 .ia .acoesMsg button:hover{color:var(--ink);border-color:var(--ink2)}
+.ia .linha{align-items:stretch}
+.ia .mais{flex:0 0 56px;border:1.5px solid var(--linha);background:var(--painel2);color:var(--ink);border-radius:12px;font-size:28px;font-weight:300;line-height:1}
+.ia .mais:hover{border-color:var(--ink2)}
+.ia .campo{flex:1;position:relative;display:flex;align-items:flex-start;border:2px solid var(--magenta);border-radius:12px;background:var(--painel2);min-width:0}
+.ia .campo textarea{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:15px var(--fonte);padding:12px 4px 12px 14px;resize:vertical;min-height:52px;max-height:200px;outline:none}
+.ia .campo .dentro{flex:0 0 auto;border:0;background:transparent;color:var(--magenta);padding:12px 8px 0 4px;cursor:pointer}
+.ia .campo #iaIr{color:var(--ink2);padding-right:12px}.ia .campo #iaIr:hover{color:var(--ink)}
+.ia .campo .dentro.gravando{color:var(--alerta);animation:pisca 1s infinite}
+.salvosBarra{display:flex;justify-content:flex-end;margin-top:6px}.salvosBarra button{border:0;background:transparent;color:var(--ink3);font-size:12.5px}
+#iaSalvos .salvo{border:1px solid var(--linha);border-radius:10px;padding:8px 10px;margin-top:6px;font-size:13px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+#iaSalvos .salvo button{border:1px solid var(--linha);background:transparent;color:var(--ink2);border-radius:999px;padding:3px 10px;font-size:12px}
+.anexos{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.anexos:empty{display:none}
+.anexos span{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--linha);background:var(--painel2);border-radius:10px;padding:4px 6px 4px 8px;font-size:12.5px;max-width:240px}
+.anexos span b{font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.anexos img{width:28px;height:28px;object-fit:cover;border-radius:6px}
+.anexos button{border:0;background:transparent;color:var(--ink3);font-size:14px;padding:0 2px}
+.ia .msg .md h3,.ia .msg .md h4{margin:10px 0 4px;font-size:15px}.ia .msg .md p{margin:4px 0}.ia .msg .md ul,.ia .msg .md ol{margin:4px 0 4px 20px;padding:0}
+.ia .msg .md table{border-collapse:collapse;margin:6px 0;font-size:13px;display:block;overflow-x:auto;max-width:100%}
+.ia .msg .md th,.ia .msg .md td{border:1px solid var(--linha);padding:4px 8px;text-align:left;white-space:nowrap}.ia .msg .md th{background:var(--painel)}
+.ia .msg{white-space:normal}.ia .msg.p{white-space:pre-wrap}
+.mapa{overflow:auto;margin:6px 0;border:1px solid var(--linha);border-radius:12px;background:var(--painel)}.mapa svg{display:block}
+.acoesR{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.acoesR button{border:0;border-bottom:4px solid rgba(0,0,0,.28);border-radius:12px;padding:12px 8px;color:#fff;font:800 15px var(--fonte);background:var(--b);cursor:pointer;transition:transform .08s}
+.acoesR button:active{transform:translateY(2px);border-bottom-width:2px}
+.acoesR button:hover{filter:brightness(1.08)}
+.acoesP{display:flex;gap:14px;margin-top:8px}.acoesP button{border:0;background:transparent;color:var(--ink3);font-size:12.5px;padding:2px 0;text-decoration:underline}
 .ia .pensando{color:var(--ink3);animation:pisca 1.2s ease-in-out infinite}
 @keyframes pisca{50%{opacity:.4}}
 #iaConversa{max-height:420px;overflow:auto}#iaJanela #iaConversa{max-height:none}
@@ -116,7 +142,7 @@ main{max-width:1180px;margin:0 auto;padding:26px 20px 110px}
   .atencao{padding:12px 0 12px 12px}.atencao h2{margin-bottom:8px}
   .atencao .itens{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-right:12px;-webkit-overflow-scrolling:touch}.atencao .itens::-webkit-scrollbar{display:none}
   .atencao a{font-size:12.5px;padding:7px 10px;flex:0 0 auto;flex-direction:column;align-items:flex-start;gap:1px}.atencao a b{font-size:18px}
-  .ia{padding:14px}.ia .linha{flex-direction:column}.ia .linha .entrar{width:100%}.ia input{font-size:16px}
+  .ia{padding:14px}.ia .mais{flex-basis:50px}.ia .campo textarea{font-size:16px;min-height:76px}.acoesR button{font-size:14.5px;padding:12px 6px}
   #iaBola{width:54px;height:54px;font-size:16px;right:14px}
   #iaJanela{bottom:calc(82px + env(safe-area-inset-bottom,0px));max-height:calc(100vh - 110px);right:12px;left:12px;width:auto}
   #abertura .sgi{font-size:48px}#abertura .barras{height:86px}#abertura .barras i{width:21px}
@@ -156,7 +182,12 @@ main{max-width:1180px;margin:0 auto;padding:26px 20px 110px}
       <button data-p="Qual OS mais consumiu material nos últimos meses?">OS que mais consumiu</button>
       <button id="iaXml" style="font-weight:700;color:var(--ink)">📎 Enviar XML da nota</button><input type="file" id="iaXmlArq" accept=".xml,text/xml" style="display:none">
     </div>
-    <div class="linha"><input id="iaPerg" placeholder="Ex.: quanto a OS-0231 consumiu? onde está o S/N TBX-2?"><button class="entrar" id="iaIr" style="--cor:#6C5DD3;margin:0;padding:12px 18px">Perguntar</button></div>
+    <div id="iaAnexos" class="anexos"></div>
+    <div class="linha"><button class="mais" id="iaClip" title="Anexar foto ou documento (PDF, Word, Excel, PowerPoint)" aria-label="Anexar">+</button><input type="file" id="iaArq" multiple accept="image/*,.pdf,.docx,.xlsx,.xls,.csv,.pptx,.txt,.md,.json" style="display:none">
+      <div class="campo"><textarea id="iaPerg" rows="2" placeholder="Escreva a sua pergunta e aperte Enter (Shift+Enter muda de linha)"></textarea>
+        <button class="dentro" id="iaMic" title="Falar a pergunta" aria-label="Falar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+        <button class="dentro" id="iaIr" title="Enviar" aria-label="Enviar"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg></button></div></div>
+    <div class="salvosBarra"><button id="iaSalvosBt">★ Salvos</button></div><div id="iaSalvos"></div>
     <div id="iaConversa"></div>
   </section>
 </main>
@@ -300,11 +331,12 @@ const conv=[]; let iaCtrl=null;
 function pintaConversa(){
   const C=$('#iaConversa');
   C.innerHTML=conv.map((m,i)=>m.info?'<div class="msg">'+esc(m.info)+'</div>':
-    '<div class="msg p"><div>'+esc(m.p)+'</div><div class="acoesMsg">'+(m.pend?'<button data-cancela>Cancelar</button>':'<button data-edita="'+i+'">✎ Editar</button>')+'</div></div>'+
-    '<div class="msg'+(m.erro?' erro':'')+'">'+(m.pend?'<span class="pensando">Pensando…</span>':esc(m.r))+'</div>').join('')+
+    '<div class="msg p"><div>'+esc(m.p)+(m.anexos&&m.anexos.length?'<div class="anexos" style="margin-top:6px">'+m.anexos.map(a=>'<span>'+(a.mini?'<img src="'+a.mini+'" alt="">':'📄')+'<b>'+esc(a.nome)+'</b></span>').join('')+'</div>':'')+'</div><div class="acoesMsg">'+(m.pend?'<button data-cancela>Cancelar</button>':'<button data-edita="'+i+'">✎ Editar</button>')+'</div></div>'+
+    '<div class="msg'+(m.erro?' erro':'')+'">'+(m.pend?'<span class="pensando">'+(m.fase||'Pensando…')+'</span>':(m.erro?esc(m.r):respostaHtml(m,i)+acoesHtml(m,i)))+'</div>').join('')+
     (conv.length?'<div class="acoesMsg" style="margin-top:8px"><button data-limpa>Limpar conversa</button></div>':'');
   C.querySelectorAll('[data-edita]').forEach(b=>b.onclick=()=>editarPergunta(Number(b.dataset.edita)));
   C.querySelectorAll('[data-cancela]').forEach(b=>b.onclick=cancelarPergunta);
+  C.querySelectorAll('[data-acao]').forEach(b=>b.onclick=()=>acaoResposta(b.dataset.acao,Number(b.dataset.i)));
   C.querySelectorAll('[data-limpa]').forEach(b=>b.onclick=()=>{ cancelarPergunta(true); conv.length=0; pintaConversa(); });
   const J=$('#iaJanela'); (J.classList.contains('aberta')?J:C).scrollTop=1e9;
 }
@@ -319,23 +351,188 @@ function editarPergunta(i){
   const txt=conv[i].p; conv.splice(i);   /* tira a pergunta e o que veio depois dela */
   pintaConversa(); $('#iaPerg').value=txt; $('#iaPerg').focus(); $('#iaPerg').select();
 }
-async function perguntar(txt){
-  txt=String(txt||'').trim(); if(!txt) return;
+async function perguntar(txt,opc){
+  opc=opc||{}; txt=String(txt||'').trim(); const anx=pendentes.splice(0); pintaAnexos();
+  if(!txt&&!anx.length) return;
   if(iaCtrl) cancelarPergunta(true);
   $('#iaPerg').value='';
   const historico=conv.filter(m=>!m.info&&!m.pend&&!m.erro).slice(-6).map(m=>({p:m.p,r:m.r}));
-  const m={p:txt,r:'',pend:true}; conv.push(m); pintaConversa();
+  const m={p:txt||(anx.some(a=>a.imagem)?'(foto enviada)':'(documento enviado)'),r:'',pend:true,voz:!!opc.voz,mapa:/mapa\s*mental/i.test(txt),
+    anexos:anx.map(a=>({nome:a.nome,mini:a.mini}))}; conv.push(m); pintaConversa();
   if(!IA_URL){ m.pend=false; m.erro=true; m.r='O Assistente ainda não foi ligado (falta o endereço do Cloudflare).'; pintaConversa(); return; }
   const ctrl=new AbortController(); iaCtrl=ctrl;
   try{
-    const r=await fetch(IA_URL,{method:'POST',signal:ctrl.signal,headers:{'Content-Type':'application/json',Authorization:'Bearer '+await token()},body:JSON.stringify({pergunta:txt,historico})});
+    const r=await fetch(IA_URL,{method:'POST',signal:ctrl.signal,headers:{'Content-Type':'application/json',Authorization:'Bearer '+await token()},body:JSON.stringify({pergunta:txt,historico,anexos:anx.filter(a=>a.texto).map(a=>({nome:a.nome,texto:a.texto})),imagens:anx.filter(a=>a.imagem).map(a=>a.imagem)})});
     const d=await r.json(); m.r=d.resposta||d.erro||'Sem resposta.'; m.erro=!d.resposta;
   }catch(e){ if(ctrl.signal.aborted) return; m.r='Não foi possível falar com o Assistente agora.'; m.erro=true; }
   if(iaCtrl===ctrl) iaCtrl=null;
   m.pend=false; pintaConversa();
+  if(m.voz&&!m.erro) falar(m.r);
 }
+/* ---------- bibliotecas (carregadas só quando precisa) ---------- */
+const CDN='https://cdnjs.cloudflare.com/ajax/libs/';
+const LIBS={xlsx:CDN+'xlsx/0.18.5/xlsx.full.min.js',jszip:CDN+'jszip/3.10.1/jszip.min.js',mammoth:CDN+'mammoth/1.6.0/mammoth.browser.min.js',
+  pdfjs:CDN+'pdf.js/3.11.174/pdf.min.js',jspdf:CDN+'jspdf/2.5.1/jspdf.umd.min.js',autotable:CDN+'jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js'};
+const _lib={};
+function lib(n){ return _lib[n]||(_lib[n]=new Promise((ok,er)=>{ const x=document.createElement('script'); x.src=LIBS[n]; x.onload=()=>ok(); x.onerror=()=>{ delete _lib[n]; er(new Error('não foi possível carregar '+n)); }; document.head.appendChild(x); })); }
+/* ---------- anexos: fotos e documentos (o texto é lido aqui no aparelho) ---------- */
+const pendentes=[];
+function pintaAnexos(){
+  $('#iaAnexos').innerHTML=pendentes.map((a,i)=>'<span>'+(a.mini?'<img src="'+a.mini+'" alt="">':'📄')+'<b>'+esc(a.nome)+'</b><button data-tira="'+i+'" title="Tirar">✕</button></span>').join('');
+  $('#iaAnexos').querySelectorAll('[data-tira]').forEach(b=>b.onclick=()=>{ pendentes.splice(Number(b.dataset.tira),1); pintaAnexos(); });
+}
+function reduzImagem(f){ return new Promise((ok,er)=>{ const img=new Image(), url=URL.createObjectURL(f);
+  img.onload=()=>{ const lado=Math.min(1024/Math.max(img.width,img.height),1), c=document.createElement('canvas'); c.width=Math.round(img.width*lado); c.height=Math.round(img.height*lado);
+    c.getContext('2d').drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(url); ok(c.toDataURL('image/jpeg',0.82)); };
+  img.onerror=()=>er(new Error('não consegui abrir a imagem')); img.src=url; }); }
+async function lerArquivo(f){
+  const ext=(f.name.split('.').pop()||'').toLowerCase(), nome=f.name;
+  if((f.type||'').startsWith('image/')){ const d=await reduzImagem(f); return {nome,imagem:d.split(',')[1],mini:d}; }
+  let t='';
+  if(ext==='pdf'){ await lib('pdfjs'); pdfjsLib.GlobalWorkerOptions.workerSrc=LIBS.pdfjs.replace('pdf.min.js','pdf.worker.min.js');
+    const doc=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;
+    for(let i=1;i<=Math.min(doc.numPages,40);i++){ const c=await (await doc.getPage(i)).getTextContent(); t+='\n[página '+i+'] '+c.items.map(x=>x.str).join(' '); } }
+  else if(ext==='docx'){ await lib('mammoth'); t=(await mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()})).value; }
+  else if(['xlsx','xls','csv'].includes(ext)){ await lib('xlsx'); const wb=XLSX.read(await f.arrayBuffer()); t=wb.SheetNames.map(n=>'[aba '+n+']\n'+XLSX.utils.sheet_to_csv(wb.Sheets[n])).join('\n'); }
+  else if(ext==='pptx'){ await lib('jszip'); const z=await JSZip.loadAsync(await f.arrayBuffer());
+    const sl=Object.keys(z.files).filter(n=>/^ppt\/slides\/slide\d+\.xml$/.test(n)).sort((a,b)=>parseInt(a.replace(/\D/g,''))-parseInt(b.replace(/\D/g,'')));
+    for(const n of sl){ const x=await z.file(n).async('string'); t+='\n[slide '+n.replace(/\D/g,'')+'] '+(x.match(/<a:t>([^<]*)<\/a:t>/g)||[]).map(v=>v.replace(/<\/?a:t>/g,'')).join(' '); } }
+  else if(['txt','md','json'].includes(ext)) t=await f.text();
+  else throw new Error('formato não aceito: '+ext);
+  t=t.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/[ \t]+/g,' ').trim();
+  if(!t) throw new Error('não encontrei texto em '+nome+' (se for uma imagem escaneada, mande como foto)');
+  return {nome,texto:t.slice(0,18000)};
+}
+$('#iaClip').onclick=()=>$('#iaArq').click();
+$('#iaArq').onchange=async e=>{ const fs=[...e.target.files]; e.target.value='';
+  for(const f of fs){ if(pendentes.length>=5) break; try{ pendentes.push(await lerArquivo(f)); }catch(x){ conv.push({info:'Não consegui ler '+f.name+': '+x.message}); pintaConversa(); } }
+  pintaAnexos(); $('#iaPerg').focus(); };
+/* ---------- voz: falar a pergunta e ouvir a resposta ---------- */
+let gravador=null;
+$('#iaMic').onclick=async()=>{
+  const B=$('#iaMic');
+  if(gravador&&gravador.state==='recording'){ gravador.stop(); return; }
+  if(!navigator.mediaDevices||!window.MediaRecorder){ conv.push({info:'Este navegador não grava áudio. Use o Chrome ou o Safari atualizados.'}); pintaConversa(); return; }
+  let st; try{ st=await navigator.mediaDevices.getUserMedia({audio:true}); }catch(x){ conv.push({info:'Sem permissão para o microfone. Libere o microfone para este site.'}); pintaConversa(); return; }
+  const partes=[]; gravador=new MediaRecorder(st); gravador.ondataavailable=ev=>{ if(ev.data.size) partes.push(ev.data); };
+  gravador.onstop=async()=>{ st.getTracks().forEach(t=>t.stop()); B.classList.remove('gravando');
+    const blob=new Blob(partes,{type:gravador.mimeType||'audio/webm'}); gravador=null;
+    const m={p:'🎤 …',r:'',pend:true,fase:'Ouvindo o áudio…'}; conv.push(m); pintaConversa();
+    try{ const r=await fetch(IA_URL+'?transcrever=1',{method:'POST',headers:{'Content-Type':blob.type,Authorization:'Bearer '+await token()},body:blob}); const d=await r.json();
+      conv.splice(conv.indexOf(m),1); pintaConversa();
+      if(d.texto) perguntar(d.texto,{voz:true}); else { conv.push({info:d.erro||'Não entendi o áudio.'}); pintaConversa(); } }
+    catch(x){ conv.splice(conv.indexOf(m),1); conv.push({info:'Não foi possível enviar o áudio agora.'}); pintaConversa(); } };
+  gravador.start(); B.classList.add('gravando');
+};
+function textoLimpo(t){ return String(t||'').replace(/```[\s\S]*?```/g,' ').replace(/\|/g,' ').replace(/[#*_>`-]{1,3}/g,' ').replace(/\s+/g,' ').trim(); }
+function falar(t){ if(!('speechSynthesis' in window)) return; speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(textoLimpo(t).slice(0,3500));
+  u.lang='pt-BR'; const v=speechSynthesis.getVoices().find(x=>/pt(-|_)BR/i.test(x.lang)); if(v) u.voice=v; u.rate=1.02; speechSynthesis.speak(u); }
+/* ---------- desenho da resposta: markdown, tabelas e mapa mental ---------- */
+function tabelasDe(t){ const T=[]; let cur=null;
+  String(t||'').split('\n').forEach(l=>{ const x=l.trim();
+    if(/^\|.*\|$/.test(x)){ if(/^\|[\s:|-]+\|$/.test(x)) return; (cur=cur||[]).push(x.slice(1,-1).split('|').map(c=>c.trim().replace(/\*\*/g,''))); }
+    else if(cur){ T.push(cur); cur=null; } }); if(cur) T.push(cur); return T; }
+function arvoreDe(t){ const L=String(t||'').split('\n'); let tema='', raiz={t:'',f:[]}, pilha=[{n:-1,no:raiz}];
+  L.forEach(l=>{ if(!tema&&/^#\s+/.test(l.trim())){ tema=l.trim().replace(/^#+\s*/,''); return; }
+    const m=/^(\s*)[-*•]\s+(.+)$/.exec(l); if(!m) return; const n=Math.floor(m[1].replace(/\t/g,'  ').length/2), no={t:m[2].replace(/\*\*/g,'').trim(),f:[]};
+    while(pilha.length>1&&pilha[pilha.length-1].n>=n) pilha.pop(); pilha[pilha.length-1].no.f.push(no); pilha.push({n,no}); });
+  raiz.t=tema||'Mapa mental'; return raiz.f.length?raiz:null; }
+function mapaSvg(raiz){
+  const CORES=['#E0187B','#2FA4E7','#F58220','#7B4FD6','#22A35A','#F5A524'];
+  const larg=t=>Math.min(260,Math.max(70,t.length*7.2+24)), H=34, VG=12, HG=46; let y=14; const nos=[];
+  const pos=(no,nv,cor)=>{ const w=larg(no.t); no.w=w; no.nv=nv; no.cor=cor;
+    if(!no.f.length){ no.y=y; y+=H+VG; } else { no.f.forEach((f,i)=>pos(f,nv+1,nv===0?CORES[i%CORES.length]:cor)); no.y=(no.f[0].y+no.f[no.f.length-1].y)/2; } nos.push(no); };
+  pos(raiz,0,'#1A1622');
+  const colX=[]; nos.forEach(n=>{ colX[n.nv]=Math.max(colX[n.nv]||0,n.w); }); const X=[14]; for(let i=1;i<colX.length;i++) X[i]=X[i-1]+colX[i-1]+HG;
+  const W=X[X.length-1]+colX[colX.length-1]+16, HT=y+4; let s='';
+  const linha=(a,b)=>{ const x1=X[a.nv]+a.w, y1=a.y+H/2, x2=X[b.nv], y2=b.y+H/2, mx=(x1+x2)/2;
+    s+='<path d="M'+x1+','+y1+' C'+mx+','+y1+' '+mx+','+y2+' '+x2+','+y2+'" fill="none" stroke="'+b.cor+'" stroke-width="2"/>'; b.f.forEach(f=>linha(b,f)); };
+  raiz.f.forEach(f=>linha(raiz,f));
+  nos.forEach(n=>{ const x=X[n.nv], raizN=n.nv===0;
+    s+='<rect x="'+x+'" y="'+n.y+'" width="'+n.w+'" height="'+H+'" rx="10" fill="'+(raizN?'#1A1622':(n.nv===1?n.cor:'#FFFFFF'))+'" stroke="'+n.cor+'" stroke-width="2"/>'+
+      '<text x="'+(x+n.w/2)+'" y="'+(n.y+H/2+4.5)+'" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-size="13" font-weight="'+(n.nv<2?700:500)+'" fill="'+(n.nv<2?'#FFFFFF':'#1A1622')+'">'+esc(n.t.length>36?n.t.slice(0,35)+'…':n.t)+'</text>'; });
+  return '<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+HT+'" viewBox="0 0 '+W+' '+HT+'"><rect width="100%" height="100%" fill="#F7F5FA"/>'+s+'</svg>';
+}
+function mdHtml(t){
+  const L=String(t||'').split('\n'); let h='', i=0;
+  const inl=x=>esc(x).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/`([^`]+)`/g,'<code>$1</code>');
+  while(i<L.length){ const l=L[i], x=l.trim();
+    if(/^\|.*\|$/.test(x)){ const tb=[]; while(i<L.length&&/^\|.*\|$/.test(L[i].trim())){ tb.push(L[i].trim()); i++; }
+      const rows=tb.filter(r=>!/^\|[\s:|-]+\|$/.test(r)).map(r=>r.slice(1,-1).split('|').map(c=>c.trim()));
+      h+='<table>'+rows.map((r,k)=>'<tr>'+r.map(c=>k?'<td>'+inl(c)+'</td>':'<th>'+inl(c)+'</th>').join('')+'</tr>').join('')+'</table>'; continue; }
+    if(/^#{1,6}\s/.test(x)){ h+='<h'+(x.startsWith('##')?4:3)+'>'+inl(x.replace(/^#+\s*/,''))+'</h'+(x.startsWith('##')?4:3)+'>'; i++; continue; }
+    if(/^(\s*)([-*•]|\d+[.)])\s+/.test(l)){ const ord=/^\s*\d/.test(l); h+=ord?'<ol>':'<ul>';
+      while(i<L.length&&/^(\s*)([-*•]|\d+[.)])\s+/.test(L[i])){ const ind=(/^(\s*)/.exec(L[i])[1].length>1)?' style="margin-left:'+(Math.floor(/^(\s*)/.exec(L[i])[1].length/2)*14)+'px"':''; h+='<li'+ind+'>'+inl(L[i].replace(/^(\s*)([-*•]|\d+[.)])\s+/,''))+'</li>'; i++; }
+      h+=ord?'</ol>':'</ul>'; continue; }
+    if(x) h+='<p>'+inl(x)+'</p>'; i++; }
+  return h;
+}
+function respostaHtml(m){
+  if(m.mapa){ const a=arvoreDe(m.r); if(a){ m._svg=mapaSvg(a); return '<div class="mapa">'+m._svg+'</div>'; } }
+  return '<div class="md">'+mdHtml(m.r)+'</div>';
+}
+function acoesHtml(m,i){ if(m.info) return ''; const b=(a,t,cor)=>'<button data-acao="'+a+'" data-i="'+i+'" style="--b:'+cor+'">'+t+'</button>';
+  const p=(a,t)=>'<button data-acao="'+a+'" data-i="'+i+'">'+t+'</button>';
+  return '<div class="acoesR">'+b('pdf','Gerar PDF','#D9412B')+b('imprimir','Imprimir','#1E7BE0')+b('salvar',m.salvo?'Salvo ✓':'Salvar no app','#E0187B')+b('email','E-mail','#8E2BD9')+
+    b('whats','WhatsApp','#1FA54A')+b('compartilhar','Compartilhar PDF','#F2A01E')+(tabelasDe(m.r).length?b('excel','Baixar Excel','#16794A'):'')+(m._svg?b('png','Baixar imagem','#2F6FB3'):'')+'</div>'+
+    '<div class="acoesP">'+p('ouvir','🔊 Ouvir')+p('copiar','Copiar texto')+'</div>'; }
+/* ---------- ações de cada resposta ---------- */
+const nomeArq=()=>'SGI_VTM_'+new Date().toISOString().slice(0,16).replace(/[-:T]/g,'');
+function baixar(blob,nome){ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=nome; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1500); }
+function svgParaPng(svg){ return new Promise((ok,er)=>{ const img=new Image(); img.onload=()=>{ const c=document.createElement('canvas'); c.width=img.width*2; c.height=img.height*2;
+  const g=c.getContext('2d'); g.scale(2,2); g.drawImage(img,0,0); c.toBlob(b=>ok({blob:b,url:c.toDataURL('image/png'),w:img.width,h:img.height}),'image/png'); }; img.onerror=er;
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg); }); }
+async function fazPdf(m){
+  await lib('jspdf'); await lib('autotable');
+  const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4',orientation:m._svg?'landscape':'portrait'}), W=doc.internal.pageSize.getWidth(), M=14; let y=M;
+  doc.setFontSize(9); doc.setTextColor(120); doc.text('SGI · VTM — Assistente   ·   '+new Date().toLocaleString('pt-BR').slice(0,17),M,y); y+=6;
+  doc.setFontSize(13); doc.setTextColor(20); doc.text(doc.splitTextToSize(m.p,W-2*M),M,y); y+=8+Math.floor(m.p.length/90)*5;
+  if(m._svg){ const im=await svgParaPng(m._svg); const lw=W-2*M, lh=Math.min(im.h*lw/im.w,doc.internal.pageSize.getHeight()-y-M); doc.addImage(im.url,'PNG',M,y,lh*im.w/im.h,lh); return doc; }
+  const L=String(m.r).split('\n'); let i=0; doc.setFontSize(10.5);
+  while(i<L.length){ const x=L[i].trim();
+    if(/^\|.*\|$/.test(x)){ const tb=[]; while(i<L.length&&/^\|.*\|$/.test(L[i].trim())){ tb.push(L[i].trim()); i++; }
+      const rows=tb.filter(r=>!/^\|[\s:|-]+\|$/.test(r)).map(r=>r.slice(1,-1).split('|').map(c=>c.trim().replace(/\*\*/g,'')));
+      doc.autoTable({head:[rows[0]],body:rows.slice(1),startY:y,margin:{left:M,right:M},styles:{fontSize:9},headStyles:{fillColor:[26,22,34]}}); y=doc.lastAutoTable.finalY+5; continue; }
+    if(y>282){ doc.addPage(); y=M; }
+    const tit=/^#{1,6}\s/.test(x); doc.setFont('helvetica',tit?'bold':'normal'); doc.setFontSize(tit?12:10.5);
+    const txt=x.replace(/^#+\s*/,'').replace(/^[-*•]\s+/,'• ').replace(/\*\*/g,''); const ls=doc.splitTextToSize(txt,W-2*M);
+    if(txt){ doc.text(ls,M,y); y+=ls.length*5+(tit?2:1); } else y+=3; i++; }
+  return doc;
+}
+async function acaoResposta(a,i){
+  const m=conv[i]; if(!m) return;
+  try{
+    if(a==='ouvir') return falar(m.r);
+    if(a==='copiar'){ await navigator.clipboard.writeText(m.r); return; }
+    if(a==='pdf'){ (await fazPdf(m)).save(nomeArq()+'.pdf'); return; }
+    if(a==='png'&&m._svg){ baixar((await svgParaPng(m._svg)).blob,nomeArq()+'_mapa.png'); return; }
+    if(a==='excel'){ await lib('xlsx'); const wb=XLSX.utils.book_new(); tabelasDe(m.r).forEach((t,k)=>XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(t.map(r=>r.map(c=>{ const n=c.replace(/^R\$\s*/,'').replace(/\./g,'').replace(',','.'); return /^-?\d+(\.\d+)?$/.test(n)&&c.trim()!==''?Number(n):c; }))),'Tabela '+(k+1)));
+      XLSX.writeFile(wb,nomeArq()+'.xlsx'); return; }
+    if(a==='imprimir'){ const w=window.open('','_blank'); w.document.write('<html><head><title>SGI · VTM</title><style>body{font-family:Arial,sans-serif;margin:24px;color:#111}table{border-collapse:collapse}th,td{border:1px solid #bbb;padding:4px 8px}th{background:#eee}h1{font-size:16px}.cab{color:#666;font-size:12px;margin-bottom:10px}</style></head><body><div class="cab">SGI · VTM — Assistente · '+new Date().toLocaleString('pt-BR').slice(0,17)+'</div><h1>'+esc(m.p)+'</h1>'+(m._svg||mdHtml(m.r))+'</body></html>'); w.document.close(); w.focus(); setTimeout(()=>w.print(),400); return; }
+    if(a==='whats'){ window.open('https://wa.me/?text='+encodeURIComponent('*'+m.p+'*\n\n'+textoZap(m.r).slice(0,3500)),'_blank'); return; }
+    if(a==='compartilhar'){ const pdf=(await fazPdf(m)).output('blob'), f=new File([pdf],nomeArq()+'.pdf',{type:'application/pdf'});
+      if(navigator.canShare&&navigator.canShare({files:[f]})){ await navigator.share({files:[f],title:'SGI · VTM',text:m.p}); return; }
+      baixar(pdf,f.name); conv.push({info:'Neste aparelho não dá para compartilhar o arquivo direto: o PDF foi baixado para você enviar.'}); pintaConversa(); return; }
+    if(a==='salvar'){ const L=salvos(); L.unshift({p:m.p,r:m.r,mapa:!!m.mapa,em:new Date().toISOString()}); guardaSalvos(L.slice(0,60)); m.salvo=true; pintaConversa(); pintaSalvos(); return; }
+    if(a==='email'){ location.href='mailto:?subject='+encodeURIComponent('SGI · VTM — '+m.p.slice(0,80))+'&body='+encodeURIComponent(m.r.slice(0,1800)+'\n\n— enviado pelo Assistente do SGI'); return; }
+  }catch(x){ conv.push({info:'Não deu para concluir: '+x.message}); pintaConversa(); }
+}
+/* ---------- "Salvar no app": respostas guardadas neste aparelho ---------- */
+const SALVOS_K=()=>'sgi:salvos:'+((auth&&auth.uid)||'');
+function salvos(){ try{ return JSON.parse(localStorage.getItem(SALVOS_K())||'[]'); }catch(e){ return []; } }
+function guardaSalvos(L){ try{ localStorage.setItem(SALVOS_K(),JSON.stringify(L)); }catch(e){} }
+function pintaSalvos(){ const B=$('#iaSalvosBt'), L=salvos(); B.textContent='★ Salvos ('+L.length+')';
+  const D=$('#iaSalvos'); if(!D.classList.contains('aberto')){ D.innerHTML=''; return; }
+  D.innerHTML=L.length?L.map((x,k)=>'<div class="salvo"><span>'+esc(x.p.slice(0,70))+' <i style="color:var(--ink3);font-style:normal">· '+new Date(x.em).toLocaleDateString('pt-BR')+'</i></span><span><button data-abre="'+k+'">Abrir</button> <button data-tira-s="'+k+'">✕</button></span></div>').join(''):'<p class="sonum" style="margin-top:6px">Nada salvo ainda. Toque em "Salvar no app" numa resposta.</p>';
+  D.querySelectorAll('[data-abre]').forEach(b=>b.onclick=()=>{ const x=salvos()[Number(b.dataset.abre)]; conv.push({p:x.p,r:x.r,mapa:x.mapa,salvo:true}); D.classList.remove('aberto'); pintaSalvos(); pintaConversa(); });
+  D.querySelectorAll('[data-tira-s]').forEach(b=>b.onclick=()=>{ const L2=salvos(); L2.splice(Number(b.dataset.tiraS),1); guardaSalvos(L2); pintaSalvos(); }); }
+$('#iaSalvosBt').onclick=()=>{ $('#iaSalvos').classList.toggle('aberto'); pintaSalvos(); };
+setTimeout(pintaSalvos,500);
+function textoZap(t){ return String(t||'').replace(/^#+\s*(.+)$/gm,'*$1*').replace(/\*\*(.+?)\*\*/g,'*$1*').replace(/^\|[\s:|-]+\|$/gm,'').replace(/^\|(.*)\|$/gm,(x,c)=>c.split('|').map(v=>v.trim()).join(' · ')); }
+/* Enter envia; Shift+Enter muda de linha; o campo cresce com o texto */
+$('#iaPerg').addEventListener('input',e=>{ e.target.style.height='auto'; e.target.style.height=Math.min(200,e.target.scrollHeight)+'px'; });
 $('#iaIr').onclick=()=>perguntar($('#iaPerg').value);
-$('#iaPerg').addEventListener('keydown',e=>{ if(e.key==='Enter') perguntar($('#iaPerg').value); });
+$('#iaPerg').addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){ e.preventDefault(); perguntar($('#iaPerg').value); } });
 document.querySelectorAll('.ia .ex button').forEach(b=>b.onclick=()=>perguntar(b.dataset.p));
 /* nota fiscal: o XML vai para o estoque, que abre o 2.1 com a nota lida — você confere e dá entrada */
 $('#iaXml').onclick=()=>$('#iaXmlArq').click();
