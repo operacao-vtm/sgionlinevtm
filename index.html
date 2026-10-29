@@ -137,10 +137,22 @@ async function dadosEstoque(){   /* a mesma conta do Painel de Estoque: saldo = 
   movs.forEach(v=>{ if(v.tipo==='saida'&&v.pendente) return; const q=num(v.qtd);
     saldo[v.material_id]=(saldo[v.material_id]||0)+(v.tipo==='entrada'?q:-q);
     if(v.tipo==='entrada'&&num(v.preco)>0&&q>0){ eq[v.material_id]=(eq[v.material_id]||0)+q; ev[v.material_id]=(ev[v.material_id]||0)+q*num(v.preco); } });
-  let z=0,b=0,val=0;
-  mats.forEach(m=>{ const s=saldo[m.id]||0, min=num(m.minimo), cm=eq[m.id]?ev[m.id]/eq[m.id]:num(m.preco);
-    if(s<=0) z++; else if(min>0&&s<min) b++;
-    val+=Math.max(0,s)*cm; });
+  let z=0,b=0;
+  mats.forEach(m=>{ const s=saldo[m.id]||0, min=num(m.minimo); if(s<=0) z++; else if(min>0&&s<min) b++; });
+  /* valor em estoque: a MESMA conta do Controle de Estoque (custo médio ponderado, lançamento a lançamento) */
+  const M={}; mats.forEach(m=>M[m.id]=m);
+  const soChave=c=>String(c||'').replace(/\D/g,'');
+  const precoBase=v=>num(v.preco)>0?num(v.preco):num((M[v.material_id]||{}).preco);
+  const custoUnit=v=>{ const p=precoBase(v), c=soChave(v.chave), q=num(v.qtd); if(!c||!q) return p;
+    const irmas=movs.filter(x=>x.tipo==='entrada'&&soChave(x.chave)===c); const tot=irmas.reduce((t,x)=>t+num(x.qtd)*precoBase(x),0);
+    const frete=Math.max(0,...irmas.map(x=>num(x.frete_nota))), desc=Math.max(0,...irmas.map(x=>num(x.desc_nota)));
+    if(!tot||(!frete&&!desc)) return p; const parte=(q*p)/tot; return (q*p+frete*parte-desc*parte)/q; };
+  const est={}; mats.forEach(m=>est[m.id]={q:0,v:0});
+  movs.slice().sort((a,b2)=>String(a.data||'').localeCompare(String(b2.data||''))||(a.tipo==='entrada'?-1:1)).forEach(v=>{
+    const e=est[v.material_id]; if(!e) return; const q=num(v.qtd);
+    if(v.tipo==='entrada'){ e.q+=q; e.v+=q*custoUnit(v); }
+    else{ const medio=e.q>0?e.v/e.q:0; e.q-=q; e.v-=q*medio; if(Math.abs(e.q)<1e-9){ e.q=0; e.v=0; } } });
+  const val=Object.values(est).reduce((t,e)=>t+e.v,0);
   const mes=mesAtual(), noMes=t=>movs.filter(v=>v.tipo===t&&!(t==='saida'&&v.pendente)&&String(v.data||'').slice(0,7)===mes).length;
   const lib=new Set(movs.filter(v=>v.tipo==='saida'&&v.pendente).map(v=>v.req_id||v.id)).size;
   return [{v:mats.length,r:'materiais cadastrados',h:SIS.estoque+'#k-estoque'},{v:brl(val),r:'valor em estoque',h:SIS.estoque+'#k-estoque'},
