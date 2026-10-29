@@ -129,14 +129,24 @@ function cartao(id,cor,icone,titulo,desc,nums,link,rotulo){
     (link?'<a class="entrar" href="'+esc(link)+'" target="_blank" rel="noopener" style="text-align:center;text-decoration:none">'+esc(rotulo||'Entrar')+' ↗</a>':'')+'</section>';
 }
 const mesAtual=()=>new Date().toISOString().slice(0,7);
-async function dadosEstoque(){
-  const [mats,movs,trocas]=await Promise.all([tudo('/rest/v1/est_materiais?select=id,minimo,preco'),tudo('/rest/v1/est_movimentos?select=material_id,tipo,qtd,pendente,req_id,id'),tudo('/rest/v1/est_trocas?select=status')]);
-  const saldo={}; movs.forEach(v=>{ if(v.tipo==='saida'&&v.pendente) return; saldo[v.material_id]=(saldo[v.material_id]||0)+(v.tipo==='entrada'?1:-1)*(Number(v.qtd)||0); });
-  let z=0,b=0,val=0; mats.forEach(m=>{ const s=saldo[m.id]||0, min=Number(m.minimo)||0; if(s<=0&&min>0) z++; else if(min>0&&s<min) b++; val+=Math.max(0,s)*(Number(m.preco)||0); });
+async function dadosEstoque(){   /* a mesma conta do Painel de Estoque: saldo = entradas − saídas liberadas; valor = saldo × custo médio */
+  const [mats,movs,trocas]=await Promise.all([tudo('/rest/v1/est_materiais?select=*&order=id'),tudo('/rest/v1/est_movimentos?select=*&order=id'),tudo('/rest/v1/est_trocas?select=status')]);
+  if(!mats.length) throw new Error('não consegui ler os produtos do estoque (permissão do seu usuário)');
+  const num=v=>{ if(typeof v==='number') return v; const t=String(v==null?'':v).trim(); if(!t) return 0; const x=Number(t.indexOf(',')>=0?t.replace(/\./g,'').replace(',','.'):t); return isNaN(x)?0:x; };
+  const saldo={}, eq={}, ev={};
+  movs.forEach(v=>{ if(v.tipo==='saida'&&v.pendente) return; const q=num(v.qtd);
+    saldo[v.material_id]=(saldo[v.material_id]||0)+(v.tipo==='entrada'?q:-q);
+    if(v.tipo==='entrada'&&num(v.preco)>0&&q>0){ eq[v.material_id]=(eq[v.material_id]||0)+q; ev[v.material_id]=(ev[v.material_id]||0)+q*num(v.preco); } });
+  let z=0,b=0,val=0;
+  mats.forEach(m=>{ const s=saldo[m.id]||0, min=num(m.minimo), cm=eq[m.id]?ev[m.id]/eq[m.id]:num(m.preco);
+    if(s<=0) z++; else if(min>0&&s<min) b++;
+    val+=Math.max(0,s)*cm; });
+  const mes=mesAtual(), noMes=t=>movs.filter(v=>v.tipo===t&&!(t==='saida'&&v.pendente)&&String(v.data||'').slice(0,7)===mes).length;
   const lib=new Set(movs.filter(v=>v.tipo==='saida'&&v.pendente).map(v=>v.req_id||v.id)).size;
-  return [{v:z,r:'itens zerados',c:z?'alerta':'',h:SIS.estoque+'#inicio'},{v:b,r:'abaixo do mínimo',c:b?'aviso':'',h:SIS.estoque+'#inicio'},
-          {v:trocas.filter(t=>t.status==='aguardando').length,r:'pedidos esperando',h:SIS.estoque+'#k-liberar'},{v:lib,r:'saídas aguardando liberação',c:lib?'aviso':'',h:SIS.estoque+'#k-liberar'},
-          {v:trocas.filter(t=>t.status==='compra').length,r:'pedidos que esperam compra',h:SIS.estoque+'#k-compras'},{v:brl(val),r:'valor em estoque',h:SIS.estoque+'#k-estoque'}];
+  return [{v:mats.length,r:'materiais cadastrados',h:SIS.estoque+'#k-estoque'},{v:brl(val),r:'valor em estoque',h:SIS.estoque+'#k-estoque'},
+          {v:b,r:'abaixo do mínimo',c:b?'aviso':'',h:SIS.estoque+'#inicio'},{v:z,r:'zerados',c:z?'alerta':'',h:SIS.estoque+'#inicio'},
+          {v:noMes('entrada'),r:'entradas no mês',h:SIS.estoque+'#k-entradas'},{v:noMes('saida'),r:'saídas no mês',h:SIS.estoque+'#k-saidas'},
+          {v:trocas.filter(t=>t.status==='aguardando').length,r:'pedidos esperando',h:SIS.estoque+'#k-liberar'},{v:lib,r:'saídas aguardando liberação',c:lib?'aviso':'',h:SIS.estoque+'#k-liberar'}];
 }
 async function dadosOS(){
   const L=await tudo('/rest/v1/os?select=status,data_conclusao,compra_material,material_entregue');
@@ -171,7 +181,7 @@ async function montar(){
   C.push(['busao','#1B7F3B','🚌','BusaoEasy','Painel do TV Busão para o técnico em campo.',null,SIS.busao]);
   $('#grade').innerHTML=C.map(c=>cartao(c[0],c[1],c[2],c[3],c[4],c[5]?[{v:'…',r:'carregando'}]:null,c[6],c[7])).join('');
   C.forEach(async c=>{ if(!c[5]) return; try{ const n=await c[5](); $('#c-'+c[0]).outerHTML=cartao(c[0],c[1],c[2],c[3],c[4],n,c[6],c[7]); }
-    catch(e){ const el=$('#c-'+c[0]); if(el){ const nd=el.querySelector('.nums'); if(nd) nd.outerHTML='<p class="sonum">Não foi possível carregar os números agora.</p>'; } } });
+    catch(e){ const el=$('#c-'+c[0]); if(el){ const nd=el.querySelector('.nums'); if(nd) nd.outerHTML='<p class="sonum" style="color:var(--zero)">Não foi possível carregar os números: '+esc(e.message||e)+'</p>'; } } });
 }
 /* Assistente (Cloudflare Workers AI) */
 async function perguntar(txt){
