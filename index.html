@@ -71,17 +71,25 @@ main{max-width:1180px;margin:0 auto;padding:26px 20px 110px}
 #login .entrar{background:var(--magenta);color:#fff;border-color:var(--magenta)}
 #aviso{color:var(--alerta);font-size:13px;min-height:18px;margin:0 0 10px}
 .ia{background:var(--painel);border:1px solid var(--linha);border-radius:18px;padding:18px;margin-top:22px;position:relative;overflow:hidden}
-.ia::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(var(--laranja),var(--magenta),var(--violeta),var(--azul))}
+.ia::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--ink3)}
 .ia h2{margin:0 0 4px;font-size:19px;font-weight:800;font-stretch:112%}.ia .linha{display:flex;gap:8px;margin-top:10px}
 .ia input{flex:1;padding:12px;border:1.5px solid var(--linha);border-radius:12px;font-size:15px;background:var(--painel2);color:var(--ink)}
 .ia .ex{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.ia .ex button{border:1px solid var(--linha);background:transparent;color:var(--ink2);border-radius:999px;padding:6px 12px;font-size:12.5px}
-.ia .ex button:hover{color:var(--ink);border-color:var(--violeta)}
-.ia .entrar{background:var(--violeta);border-color:var(--violeta);color:#fff;margin:0;padding:12px 18px}
+.ia .ex button:hover{color:var(--ink);border-color:var(--ink2)}
+.ia .entrar{background:var(--ink);border-color:var(--ink);color:var(--noite);margin:0;padding:12px 18px}
+.ia .entrar:hover{background:var(--ink2);border-color:var(--ink2);color:var(--noite)}
 .ia .msg{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--painel2);font-size:14.5px;line-height:1.5;white-space:pre-wrap}
-#iaBola{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:50;width:60px;height:60px;border-radius:50%;border:0;background:conic-gradient(from 200deg,var(--laranja),var(--magenta),var(--violeta),var(--azul),var(--laranja));color:#fff;font-size:27px;box-shadow:0 10px 28px rgba(0,0,0,.4)}
+#iaBola{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:50;width:58px;height:58px;border-radius:50%;border:1px solid var(--linha);background:var(--ink);color:var(--noite);font:800 17px var(--fonte);letter-spacing:1px;box-shadow:0 8px 22px rgba(0,0,0,.35)}
 #iaJanela{position:fixed;right:18px;bottom:calc(90px + env(safe-area-inset-bottom,0px));z-index:49;width:min(440px,calc(100vw - 24px));max-height:calc(100vh - 120px);overflow:auto;display:none;box-shadow:0 16px 44px rgba(0,0,0,.5);border-radius:18px}
 #iaJanela.aberta{display:block}#iaJanela .ia{margin:0}
-.ia .msg.p{background:transparent;border:1px dashed var(--linha);color:var(--ink2)}
+.ia .msg.p{background:transparent;border:1px solid var(--linha);color:var(--ink);margin-left:18%;display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.ia .msg.erro{color:var(--alerta)}
+.ia .acoesMsg{display:flex;gap:6px;flex-shrink:0}
+.ia .acoesMsg button{border:1px solid var(--linha);background:transparent;color:var(--ink2);border-radius:999px;padding:3px 10px;font-size:12px}
+.ia .acoesMsg button:hover{color:var(--ink);border-color:var(--ink2)}
+.ia .pensando{color:var(--ink3);animation:pisca 1.2s ease-in-out infinite}
+@keyframes pisca{50%{opacity:.4}}
+#iaConversa{max-height:420px;overflow:auto}#iaJanela #iaConversa{max-height:none}
 /* entrada: painel de LED ligando */
 #abertura{position:fixed;inset:0;z-index:200;background:var(--noite);display:grid;place-items:center;transition:opacity .45s ease}
 #abertura.sai{opacity:0;pointer-events:none}
@@ -109,7 +117,7 @@ main{max-width:1180px;margin:0 auto;padding:26px 20px 110px}
   .atencao .itens{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-right:12px;-webkit-overflow-scrolling:touch}.atencao .itens::-webkit-scrollbar{display:none}
   .atencao a{font-size:12.5px;padding:7px 10px;flex:0 0 auto;flex-direction:column;align-items:flex-start;gap:1px}.atencao a b{font-size:18px}
   .ia{padding:14px}.ia .linha{flex-direction:column}.ia .linha .entrar{width:100%}.ia input{font-size:16px}
-  #iaBola{width:56px;height:56px;font-size:25px;right:14px}
+  #iaBola{width:54px;height:54px;font-size:16px;right:14px}
   #iaJanela{bottom:calc(82px + env(safe-area-inset-bottom,0px));max-height:calc(100vh - 110px);right:12px;left:12px;width:auto}
   #abertura .sgi{font-size:48px}#abertura .barras{height:86px}#abertura .barras i{width:21px}
 }
@@ -137,7 +145,7 @@ main{max-width:1180px;margin:0 auto;padding:26px 20px 110px}
   <section class="atencao" id="atencao"><h2>Precisa de atenção agora</h2><div class="itens" id="atencaoItens"><span class="sonum">Conferindo os sistemas…</span></div></section>
   <div class="grade" id="grade"></div>
   <section class="ia">
-    <h2>🤖 Pergunte ao Assistente</h2>
+    <h2>Assistente</h2>
     <p class="sonum">Responde com os dados do estoque, das OS, do Patrimônio, dos documentos e do TV Busão, dentro do que o seu acesso permite.</p>
     <div class="ex">
       <button data-p="Quantas OS cada técnico concluiu este mês e no mês passado?">OS por técnico</button>
@@ -146,13 +154,13 @@ main{max-width:1180px;margin:0 auto;padding:26px 20px 110px}
       <button data-p="Quais ferramentas estão com a equipe?">Ferramentas com a equipe</button>
       <button data-p="Quais OS estão esperando material?">OS esperando material</button>
       <button data-p="Qual OS mais consumiu material nos últimos meses?">OS que mais consumiu</button>
-      <button id="iaXml" style="border-color:#6C5DD3;color:#6C5DD3;font-weight:700">📎 Enviar XML da nota</button><input type="file" id="iaXmlArq" accept=".xml,text/xml" style="display:none">
+      <button id="iaXml" style="font-weight:700;color:var(--ink)">📎 Enviar XML da nota</button><input type="file" id="iaXmlArq" accept=".xml,text/xml" style="display:none">
     </div>
     <div class="linha"><input id="iaPerg" placeholder="Ex.: quanto a OS-0231 consumiu? onde está o S/N TBX-2?"><button class="entrar" id="iaIr" style="--cor:#6C5DD3;margin:0;padding:12px 18px">Perguntar</button></div>
     <div id="iaConversa"></div>
   </section>
 </main>
-<button id="iaBola" title="Assistente">🤖</button>
+<button id="iaBola" title="Assistente" aria-label="Abrir o Assistente">IA</button>
 <div id="iaJanela"></div>
 <script>
 const SB_URL='https://xqeyhsuoinayuwydyesu.supabase.co';
@@ -287,16 +295,44 @@ async function montar(){
     catch(e){ const el=$('#c-'+c[0]); if(el){ const nd=el.querySelector('.nums'); if(nd) nd.outerHTML='<p class="sonum" style="color:var(--alerta)">Não foi possível carregar os números: '+esc(e.message||e)+'</p>'; } }
     finally{ faltam--; pintaAtencao(); } });
 }
-/* Assistente (Cloudflare Workers AI) */
+/* Assistente (Cloudflare Workers AI): conversa com memória, cancelar e editar */
+const conv=[]; let iaCtrl=null;
+function pintaConversa(){
+  const C=$('#iaConversa');
+  C.innerHTML=conv.map((m,i)=>m.info?'<div class="msg">'+esc(m.info)+'</div>':
+    '<div class="msg p"><div>'+esc(m.p)+'</div><div class="acoesMsg">'+(m.pend?'<button data-cancela>Cancelar</button>':'<button data-edita="'+i+'">✎ Editar</button>')+'</div></div>'+
+    '<div class="msg'+(m.erro?' erro':'')+'">'+(m.pend?'<span class="pensando">Pensando…</span>':esc(m.r))+'</div>').join('')+
+    (conv.length?'<div class="acoesMsg" style="margin-top:8px"><button data-limpa>Limpar conversa</button></div>':'');
+  C.querySelectorAll('[data-edita]').forEach(b=>b.onclick=()=>editarPergunta(Number(b.dataset.edita)));
+  C.querySelectorAll('[data-cancela]').forEach(b=>b.onclick=cancelarPergunta);
+  C.querySelectorAll('[data-limpa]').forEach(b=>b.onclick=()=>{ cancelarPergunta(true); conv.length=0; pintaConversa(); });
+  const J=$('#iaJanela'); (J.classList.contains('aberta')?J:C).scrollTop=1e9;
+}
+function cancelarPergunta(silencioso){
+  if(!iaCtrl) return; iaCtrl.abort(); iaCtrl=null;
+  const k=conv.findIndex(m=>m.pend); if(k<0) return;
+  const txt=conv[k].p; conv.splice(k,1); pintaConversa();
+  if(silencioso!==true){ $('#iaPerg').value=txt; $('#iaPerg').focus(); }
+}
+function editarPergunta(i){
+  if(iaCtrl){ iaCtrl.abort(); iaCtrl=null; }
+  const txt=conv[i].p; conv.splice(i);   /* tira a pergunta e o que veio depois dela */
+  pintaConversa(); $('#iaPerg').value=txt; $('#iaPerg').focus(); $('#iaPerg').select();
+}
 async function perguntar(txt){
   txt=String(txt||'').trim(); if(!txt) return;
-  const C=$('#iaConversa'); C.insertAdjacentHTML('afterbegin','<div class="msg p">'+esc(txt)+'</div><div class="msg" id="iaUlt">Pensando…</div>');
-  const alvo=$('#iaUlt'); alvo.removeAttribute('id'); $('#iaPerg').value='';
-  if(!IA_URL){ alvo.textContent='O Assistente ainda não foi ligado (falta o endereço do Cloudflare).'; return; }
+  if(iaCtrl) cancelarPergunta(true);
+  $('#iaPerg').value='';
+  const historico=conv.filter(m=>!m.info&&!m.pend&&!m.erro).slice(-6).map(m=>({p:m.p,r:m.r}));
+  const m={p:txt,r:'',pend:true}; conv.push(m); pintaConversa();
+  if(!IA_URL){ m.pend=false; m.erro=true; m.r='O Assistente ainda não foi ligado (falta o endereço do Cloudflare).'; pintaConversa(); return; }
+  const ctrl=new AbortController(); iaCtrl=ctrl;
   try{
-    const r=await fetch(IA_URL,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+await token()},body:JSON.stringify({pergunta:txt})});
-    const d=await r.json(); alvo.textContent=d.resposta||d.erro||'Sem resposta.';
-  }catch(e){ alvo.textContent='Não foi possível falar com o Assistente agora.'; }
+    const r=await fetch(IA_URL,{method:'POST',signal:ctrl.signal,headers:{'Content-Type':'application/json',Authorization:'Bearer '+await token()},body:JSON.stringify({pergunta:txt,historico})});
+    const d=await r.json(); m.r=d.resposta||d.erro||'Sem resposta.'; m.erro=!d.resposta;
+  }catch(e){ if(ctrl.signal.aborted) return; m.r='Não foi possível falar com o Assistente agora.'; m.erro=true; }
+  if(iaCtrl===ctrl) iaCtrl=null;
+  m.pend=false; pintaConversa();
 }
 $('#iaIr').onclick=()=>perguntar($('#iaPerg').value);
 $('#iaPerg').addEventListener('keydown',e=>{ if(e.key==='Enter') perguntar($('#iaPerg').value); });
@@ -306,9 +342,9 @@ $('#iaXml').onclick=()=>$('#iaXmlArq').click();
 $('#iaXmlArq').onchange=async e=>{
   const f=e.target.files[0]; e.target.value=''; if(!f) return;
   const txt=await f.text();
-  if(!/<infNFe/i.test(txt)){ $('#iaConversa').insertAdjacentHTML('afterbegin','<div class="msg">Este arquivo não parece um XML de nota fiscal (NF-e).</div>'); return; }
-  try{ localStorage.setItem('sgi:xml',JSON.stringify({nome:f.name,xml:txt,quando:Date.now()})); }catch(x){ $('#iaConversa').insertAdjacentHTML('afterbegin','<div class="msg">A nota é grande demais para enviar por aqui. Use o 2.1 no estoque.</div>'); return; }
-  $('#iaConversa').insertAdjacentHTML('afterbegin','<div class="msg">Nota '+esc(f.name)+' enviada ao estoque: confira os itens e toque em “Dar entrada em tudo”.</div>');
+  if(!/<infNFe/i.test(txt)){ conv.push({info:'Este arquivo não parece um XML de nota fiscal (NF-e).'}); pintaConversa(); return; }
+  try{ localStorage.setItem('sgi:xml',JSON.stringify({nome:f.name,xml:txt,quando:Date.now()})); }catch(x){ conv.push({info:'A nota é grande demais para enviar por aqui. Use o 2.1 no estoque.'}); pintaConversa(); return; }
+  conv.push({info:'Nota '+f.name+' enviada ao estoque: confira os itens e toque em “Dar entrada em tudo”.'}); pintaConversa();
   window.open(SIS.estoque+'#e-nota-xml','_blank');
 };
 /* botão flutuante: abre o Assistente por cima de qualquer parte da página */
@@ -316,7 +352,7 @@ $('#iaXmlArq').onchange=async e=>{
   casa.insertBefore(marca,ia);
   $('#iaBola').onclick=()=>{ const J=$('#iaJanela'), abrir=!J.classList.contains('aberta');
     if(abrir){ J.appendChild(ia); J.classList.add('aberta'); $('#iaBola').textContent='✕'; setTimeout(()=>$('#iaPerg').focus(),50); }
-    else{ casa.insertBefore(ia,marca); J.classList.remove('aberta'); $('#iaBola').textContent='🤖'; } }; }
+    else{ casa.insertBefore(ia,marca); J.classList.remove('aberta'); $('#iaBola').textContent='IA'; } }; }
 /* instalar como app */
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 /* entrada: uma vez por sessão, ~1,5 s */
